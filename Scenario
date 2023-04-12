@@ -1,0 +1,44 @@
+Feature: W2 Login
+    As an normal user
+    I want to visit the W2 website
+    So that I can Login into my account
+Rule: Test from login page
+  Background: Go to the login page
+    Given I go to the login page successfully
+    
+  Scenario: Attempt to login without credentials
+    When I attempt to login without any credentials
+    Then I should see login error message "Login went wrong. Please try again."
+
+  Scenario: Attempt to login with incorrect credentials
+    When I put in email as "incorrect@email.com"
+    And I put in password as "blabla"
+    And I attempt to login
+    Then I should see error message "Login went wrong. Please try again."
+
+  Scenario: Attempt to login with correct credentials
+    When I put in email as "yen.tranthikim@ncc.asia" 
+    And I put in password as "kimyen0205..." 
+    And I attempt to login
+    Then I should see dashboard page
+  
+  Scenario: Attempt to login with google account having domain extension other than ncc.asia
+    When I put in email as "incorrect@email.com"
+    And I put in password as "blabla"
+    Then I should see error message "Đã chặn quyền truy cập: Chỉ có thể sử dụng W2 Dev trong tổ chức"
+
+  Scenario: Attempt to login with google account that includes ncc.asia domain
+    When I put in email as "yen.tranthikim@ncc.asia"
+    And I put in password as "kimyen0205..."
+    Then I should see dashboard page
+    
+    Given at least one google account already exists in google profile
+  Scenario: Attempt to login with google account having domain extension other than ncc.asia
+    When I choose account that don't include ncc.asia domain
+    Then i should see error message "Đã chặn quyền truy cập: Chỉ có thể sử dụng W2 Dev trong tổ chức"
+    
+   Scenario: Attempt to login with google account that includes ncc.asia domain
+    When I choose account including ncc.asia domain
+    Then I should see dashboard page
+
+    
